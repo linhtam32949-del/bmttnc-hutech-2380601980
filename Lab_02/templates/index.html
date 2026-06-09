@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 02 - Nguyễn Linh Tâm</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            overflow: hidden;
+            height: fit-content;
+        }
+
+        .card-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .card-header:hover {
+            background: #0056b3;
+        }
+
+        .card-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .crypto-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .crypto-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin: 5px 0 2px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        /* Gợi ý nhỏ dưới ô nhập */
+        .input-hint {
+            display: block;
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 5px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .result-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e9ecef;
+            border-left: 5px solid #17a2b8;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            word-break: break-all;
+            display: none;
+        }
+    </style>
+
+    <script>
+        function toggle(id) {
+            let x = document.getElementById(id);
+            if (x.style.display === "block") {
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const forms = document.querySelectorAll("form");
+            
+            forms.forEach(form => {
+                form.addEventListener("submit", function(event) {
+                    event.preventDefault(); 
+
+                    const url = this.getAttribute("action");
+                    const formData = new FormData(this);
+                    const resultDiv = this.querySelector(".result-box");
+
+                    const searchParams = new URLSearchParams();
+                    for (const pair of formData) {
+                        searchParams.append(pair[0], pair[1]);
+                    }
+
+                    resultDiv.style.display = "block";
+                    resultDiv.innerHTML = "<em>Đang xử lý kết quả...</em>";
+
+                    fetch(url, {
+                        method: "POST",
+                        body: searchParams,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Mạng hoặc Server gặp lỗi.');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        resultDiv.innerHTML = "<strong>Kết quả:</strong> " + data;
+                    })
+                    .catch(error => {
+                        resultDiv.innerHTML = "<strong style='color:red;'>Lỗi:</strong> " + error.message;
+                    });
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>BÀI THỰC HÀNH BẢO MẬT THÔNG TIN NÂNG CAO</h1>
+    <h3>Nguyễn Linh Tâm - 2380601980</h3>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-header" onclick="toggle('caesar')">
+            Caesar Cipher
+        </div>
+        <div class="card-content" id="caesar">
+            <div class="crypto-section">
+                <h3>Mã hóa</h3>
+                <form action="/encrypt">
+                    <input type="text" name="inputPlainText" placeholder="Ví dụ: HELLO" required>
+                    <span class="input-hint">* Gợi ý: Nhập chuỗi văn bản cần mã hóa (nên dùng chữ không dấu).</span>
+                    
+                    <input type="number" name="inputKeyPlain" placeholder="Ví dụ: 3" min="1" max="25" required>
+                    <span class="input-hint">* Gợi ý: Nhập một số nguyên từ 1 đến 25.</span>
+                    
+                    <button type="submit">Encrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+
+            <div class="crypto-section">
+                <h3>Giải mã</h3>
+                <form action="/decrypt">
+                    <input type="text" name="inputCipherText" placeholder="Ví dụ: KHOOR" required>
+                    <span class="input-hint">* Gợi ý: Nhập chuỗi mã hóa (Ciphertext) cần giải mã.</span>
+                    
+                    <input type="number" name="inputKeyCipher" placeholder="Ví dụ: 3" min="1" max="25" required>
+                    <span class="input-hint">* Gợi ý: Nhập số khóa dịch chuyển tương ứng (1 - 25).</span>
+                    
+                    <button type="submit">Decrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" onclick="toggle('vigenere')">
+            Vigenere Cipher
+        </div>
+        <div class="card-content" id="vigenere">
+            <div class="crypto-section">
+                <h3>Mã hóa</h3>
+                <form action="/vigenere/encrypt">
+                    <input type="text" name="plain_text" placeholder="Ví dụ: ATTACKATDAWN" required>
+                    <span class="input-hint">* Gợi ý: Nhập văn bản rõ (không chứa số hay ký tự đặc biệt).</span>
+                    
+                    <input type="text" name="key" placeholder="Ví dụ: LEMON" pattern="[A-Za-z]+" title="Khóa phải là một chuỗi chữ cái" required>
+                    <span class="input-hint">* Gợi ý: Khóa phải là một từ bằng chữ (Ví dụ: BANANA, KEY...).</span>
+                    
+                    <button type="submit">Encrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+
+            <div class="crypto-section">
+                <h3>Giải mã</h3>
+                <form action="/vigenere/decrypt">
+                    <input type="text" name="cipher_text" placeholder="Ví dụ: LXFOPVEFRNHR" required>
+                    <span class="input-hint">* Gợi ý: Nhập chuỗi mật mã Vigenere cần giải.</span>
+                    
+                    <input type="text" name="key" placeholder="Ví dụ: LEMON" pattern="[A-Za-z]+" title="Khóa phải là một chuỗi chữ cái" required>
+                    <span class="input-hint">* Gợi ý: Nhập đúng từ khóa ban đầu dùng để mã hóa.</span>
+                    
+                    <button type="submit">Decrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" onclick="toggle('railfence')">
+            Rail Fence Cipher
+        </div>
+        <div class="card-content" id="railfence">
+            <div class="crypto-section">
+                <h3>Mã hóa</h3>
+                <form action="/railfence/encrypt">
+                    <input type="text" name="plain_text" placeholder="Ví dụ: DEFENDTHEEASTWALL" required>
+                    <span class="input-hint">* Gợi ý: Văn bản cần mã hóa theo hàng rào.</span>
+                    
+                    <input type="number" name="key" placeholder="Ví dụ: 3" min="2" required>
+                    <span class="input-hint">* Gợi ý: Số đường ray (hàng) muốn tạo, phải lớn hơn hoặc bằng 2.</span>
+                    
+                    <button type="submit">Encrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+
+            <div class="crypto-section">
+                <h3>Giải mã</h3>
+                <form action="/railfence/decrypt">
+                    <input type="text" name="cipher_text" placeholder="Ví dụ: DNETLHEDTEAAWFXS" required>
+                    <span class="input-hint">* Gợi ý: Văn bản đã bị xáo trộn theo hàng rào.</span>
+                    
+                    <input type="number" name="key" placeholder="Ví dụ: 3" min="2" required>
+                    <span class="input-hint">* Gợi ý: Nhập đúng số đường ray ban đầu.</span>
+                    
+                    <button type="submit">Decrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" onclick="toggle('playfair')">
+            Playfair Cipher
+        </div>
+        <div class="card-content" id="playfair">
+            <div class="crypto-section">
+                <h3>Mã hóa</h3>
+                <form action="/playfair/encrypt">
+                    <input type="text" name="plain_text" placeholder="Ví dụ: INSTRUMENTS" required>
+                    <span class="input-hint">* Gợi ý: Văn bản rõ (thường tự động gom cụm 2 ký tự, thay J thành I).</span>
+                    
+                    <input type="text" name="key" placeholder="Ví dụ: MONARCHY" pattern="[A-Za-z]+" title="Khóa phải là một chuỗi chữ cái" required>
+                    <span class="input-hint">* Gợi ý: Từ khóa để lập ma trận 5x5 (không chứa ký tự đặc biệt).</span>
+                    
+                    <button type="submit">Encrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+
+            <div class="crypto-section">
+                <h3>Giải mã</h3>
+                <form action="/playfair/decrypt">
+                    <input type="text" name="cipher_text" placeholder="Ví dụ: GATLMZCLRZ" required>
+                    <span class="input-hint">* Gợi ý: Nhập chuỗi mật mã thu được từ ma trận Playfair.</span>
+                    
+                    <input type="text" name="key" placeholder="Ví dụ: MONARCHY" pattern="[A-Za-z]+" title="Khóa phải là một chuỗi chữ cái" required>
+                    <span class="input-hint">* Gợi ý: Từ khóa ma trận dùng để giải mã ngược lại.</span>
+                    
+                    <button type="submit">Decrypt</button>
+                    <div class="result-box"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

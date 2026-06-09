@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caesar Cipher</title>
+</head>
+<body>
+
+<h2>CAESAR CIPHER</h2>
+
+<h3>Encryption</h3>
+
+<form method="POST" action="/encrypt">
+
+    <label>Plain Text</label><br>
+    <input type="text" name="inputPlainText" required><br><br>
+
+    <label>Key</label><br>
+    <input type="number" name="inputKeyPlain" required><br><br>
+
+    <button type="submit">Encrypt</button>
+
+</form>
+
+<hr>
+
+<h3>Decryption</h3>
+
+<form method="POST" action="/decrypt">
+
+    <label>Cipher Text</label><br>
+    <input type="text" name="inputCipherText" required><br><br>
+
+    <label>Key</label><br>
+    <input type="number" name="inputKeyCipher" required><br><br>
+
+    <button type="submit">Decrypt</button>
+
+</form>
+
+</body>
+</html>

@@ -1,41 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caesar Cipher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .page {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .header, .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .header {
+            padding: 22px;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        .card {
+            padding: 24px;
+        }
+
+        .section {
+            padding-bottom: 22px;
+            margin-bottom: 22px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .section:last-child {
+            border-bottom: 0;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            margin-bottom: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button, .back-link {
+            display: inline-block;
+            padding: 10px 18px;
+            color: #fff;
+            border: 0;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #28a745;
+        }
+
+        .back-link {
+            background: #007bff;
+            margin-top: 18px;
+        }
+    </style>
 </head>
 <body>
+    <div class="page">
+        <div class="header">
+            <h1>Caesar Cipher</h1>
+            <a class="back-link" href="/">Quay ve trang chinh</a>
+        </div>
 
-<h2>CAESAR CIPHER</h2>
+        <div class="card">
+            <div class="section">
+                <h2>Encryption</h2>
+                <form method="POST" action="/encrypt">
+                    <label>Plain Text</label>
+                    <input type="text" name="inputPlainText" pattern="[A-Za-z]+" title="Chi nhap chu cai A-Z, khong nhap khoang trang, so hoac ky tu dac biet." placeholder="Vi du: HELLO" required>
 
-<h3>Encryption</h3>
+                    <label>Key</label>
+                    <input type="number" name="inputKeyPlain" min="1" max="25" title="Key Caesar phai la so nguyen tu 1 den 25." placeholder="Vi du: 3" required>
 
-<form method="POST" action="/encrypt">
+                    <button type="submit">Encrypt</button>
+                </form>
+            </div>
 
-    <label>Plain Text</label><br>
-    <input type="text" name="inputPlainText" required><br><br>
+            <div class="section">
+                <h2>Decryption</h2>
+                <form method="POST" action="/decrypt">
+                    <label>Cipher Text</label>
+                    <input type="text" name="inputCipherText" pattern="[A-Za-z]+" title="Chi nhap chu cai A-Z, khong nhap khoang trang, so hoac ky tu dac biet." placeholder="Vi du: KHOOR" required>
 
-    <label>Key</label><br>
-    <input type="number" name="inputKeyPlain" required><br><br>
+                    <label>Key</label>
+                    <input type="number" name="inputKeyCipher" min="1" max="25" title="Key Caesar phai la so nguyen tu 1 den 25." placeholder="Vi du: 3" required>
 
-    <button type="submit">Encrypt</button>
-
-</form>
-
-<hr>
-
-<h3>Decryption</h3>
-
-<form method="POST" action="/decrypt">
-
-    <label>Cipher Text</label><br>
-    <input type="text" name="inputCipherText" required><br><br>
-
-    <label>Key</label><br>
-    <input type="number" name="inputKeyCipher" required><br><br>
-
-    <button type="submit">Decrypt</button>
-
-</form>
-
+                    <button type="submit">Decrypt</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

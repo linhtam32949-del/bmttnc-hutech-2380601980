@@ -1,24 +1,58 @@
-<hr>
-<h2>VIGENERE CIPHER</h2>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigenere Cipher</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
+        .page { max-width: 760px; margin: 0 auto; }
+        .header, .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12); }
+        .header { padding: 22px; margin-bottom: 22px; text-align: center; }
+        .card { padding: 24px; }
+        .section { padding-bottom: 22px; margin-bottom: 22px; border-bottom: 1px dashed #ddd; }
+        .section:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+        label { display: block; font-weight: bold; margin-bottom: 6px; }
+        input { width: 100%; padding: 11px; margin-bottom: 14px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button, .back-link { display: inline-block; padding: 10px 18px; color: #fff; border: 0; border-radius: 6px; font-weight: bold; text-decoration: none; cursor: pointer; }
+        button { background: #28a745; }
+        .back-link { background: #007bff; margin-top: 18px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <h1>Vigenere Cipher</h1>
+            <a class="back-link" href="/">Quay ve trang chinh</a>
+        </div>
 
-<form action="/vigenere/encrypt" method="POST">
-    Plain Text:
-    <input type="text" name="plain_text"><br><br>
+        <div class="card">
+            <div class="section">
+                <h2>Encryption</h2>
+                <form action="/vigenere/encrypt" method="POST">
+                    <label>Plain Text</label>
+                    <input type="text" name="plain_text" pattern="[A-Za-z]+" title="Plain text chi duoc gom cac chu cai A-Z." placeholder="Vi du: ATTACKATDAWN" required>
 
-    Key:
-    <input type="text" name="key"><br><br>
+                    <label>Key</label>
+                    <input type="text" name="key" pattern="[A-Za-z]+" title="Key phai la chuoi chu cai va khong duoc de trong." placeholder="Vi du: LEMON" required>
 
-    <button type="submit">Encrypt</button>
-</form>
+                    <button type="submit">Encrypt</button>
+                </form>
+            </div>
 
-<br>
+            <div class="section">
+                <h2>Decryption</h2>
+                <form action="/vigenere/decrypt" method="POST">
+                    <label>Cipher Text</label>
+                    <input type="text" name="cipher_text" pattern="[A-Za-z]+" title="Cipher text chi duoc gom cac chu cai A-Z." placeholder="Vi du: LXFOPVEFRNHR" required>
 
-<form action="/vigenere/decrypt" method="POST">
-    Cipher Text:
-    <input type="text" name="cipher_text"><br><br>
+                    <label>Key</label>
+                    <input type="text" name="key" pattern="[A-Za-z]+" title="Key phai la chuoi chu cai va khong duoc de trong." placeholder="Vi du: LEMON" required>
 
-    Key:
-    <input type="text" name="key"><br><br>
-
-    <button type="submit">Decrypt</button>
-</form>
+                    <button type="submit">Decrypt</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
